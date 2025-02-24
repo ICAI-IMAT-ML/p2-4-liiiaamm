@@ -65,7 +65,7 @@ class LinearRegressor:
             None: Modifies the model's coefficients and intercept in-place.
         """
         # Replace this code with the code you did in the previous laboratory session
-        X = np.c_[np.ones(X.shape[0]),X]
+        #X = np.c_[np.ones(X.shape[0]),X]
         w = np.linalg.inv((np.transpose(X)@X))@(np.transpose(X))@y
         self.intercept = w[0]
         self.coefficients = w[1:]
