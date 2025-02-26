@@ -77,20 +77,28 @@ class LinearRegressor:
             np.random.rand(X.shape[1] - 1) * 0.01
         )  # Small random numbers
         self.intercept = np.random.rand() * 0.01
+        self.loss_values = []  # Para el gráfico de la loss
+        self.param_history = []  # Para el gráfico de los pasos en el espacio (b, w1)
+
  
         # Implement gradient descent (TODO)
         for epoch in range(iterations):
             predictions = self.predict(X=X[:, 1:])  # X es una matriz con la primera columna de todo 1s, por lo que pasamos al preidict la segunda columna solo
             error = predictions-y   # en la diapo pone y-predictions
            
+            mse = np.mean(error**2)
+            self.loss_values.append(mse)
+
+            self.param_history.append((self.intercept, *self.coefficients))
+
             gradient = (1/m) * np.dot(error, X)  # dot es para hacer un producto vectorial (en este caso fila por matriz)
 
  
             self.intercept -= learning_rate*gradient[0]
-            self.coefficients -= learning_rate*gradient[1]
+            self.coefficients -= learning_rate*gradient[1:]
  
             # TODO: Calculate and print the loss every 10 epochs
-            if epoch % 10 == 0:
+            if epoch % 100000 == 0:
                 mse = np.power(evaluate_regression(y,predictions)["RMSE"],2)
                 print(f"Epoch {epoch}: MSE = {mse}")
     def predict(self, X):
